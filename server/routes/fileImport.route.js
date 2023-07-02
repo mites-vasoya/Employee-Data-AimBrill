@@ -14,10 +14,9 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 const pool = require("../db/db");
-const {insertImportedFileData} = require("../crud_ops/crud_ops");
+const {insertImportedFileData} = require("../crud_ops/crudOPS.controller");
 
-
-//File import route
+//File Import Route
 router.post("/import", upload.single('file'), async (req, res) => {
     const importedFile = req.file;
 
