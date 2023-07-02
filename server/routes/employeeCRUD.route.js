@@ -2,15 +2,31 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    editEmployeeData,
-    deleteEmployeeData,
-    insertNewEmployeeData,
+    editEmployeeData, deleteEmployeeData, insertNewEmployeeData,
 } = require("../crud_ops/crudOPS.controller")
+
+const {generateRandomNumber} = require("../functions/functions");
 
 
 //Insert New Employee
 router.post("/add", async (req, res) => {
-    const insertResponse = await insertNewEmployeeData();
+    const {...fields} = req.body;
+    const tableName = 'employee_data';
+
+    const employeeID = generateRandomNumber();
+
+    //Add randomaly generated 'employeeid' to body data
+    fields.employeeid = employeeID;
+
+    const columns = Object.keys(fields);
+    const columnNames = columns.join(', ');
+    const queryValues = Object.values(fields);
+    const valuePlaceholders = queryValues.map((value, index) => `$${index + 1}`).join(', ');
+
+    //Insert new user data
+    const insertResponse = await insertNewEmployeeData(employeeID, tableName, columnNames, queryValues, valuePlaceholders);
+
+    res.status(200).json({data: insertResponse.addedEmployee, message: insertResponse.message});
 })
 
 //Edit Employee Data

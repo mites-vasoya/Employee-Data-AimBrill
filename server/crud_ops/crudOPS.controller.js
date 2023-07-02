@@ -30,17 +30,35 @@ const insertImportedFileData = (excelParsedData, tableName) => {
     // done();
 };
 
-const insertNewEmployeeData = async () => {
-    console.log("New Employee Data Controller");
+const insertNewEmployeeData = async (employeeID, tableName, columnNames, queryValues, valuePlaceholders) => {
+    const insertQuery = `INSERT INTO ${tableName} (${columnNames}) VALUES (${valuePlaceholders})`;
+
+    const insertData = await pool.query(insertQuery, queryValues);
+
+    //
+    if (insertData.rowCount !== 0) {
+        const findQuery = `SELECT * FROM ${tableName} WHERE employeeid = $1`;
+        const employeeIdData = [employeeID]
+        const findEmployee = await pool.query(findQuery, employeeIdData);
+        console.log("INSERT DATA : ", findEmployee.rows[0]);
+        const message = "New Employee Data Inserted...";
+        return {message, addedEmployee: findEmployee.rows[0]};
+    } else {
+        const message = "Can't add employee data...";
+        return {message};
+    }
 }
 
 const editEmployeeData = async (employeeID, tableName, setClause, values) => {
-    const findQuery = `SELECT * FROM ${tableName} WHERE employeeid = $1`;
+    const findQuery = `
+    SELECT * FROM ${tableName}
+    WHERE
+    employeeid = $1`;
     const employeeIdData = [values[0]]
     const findEmployee = await pool.query(findQuery, employeeIdData);
 
     if (findEmployee.rowCount !== 0) {
-        const updateQuery = `UPDATE ${tableName} SET ${setClause} WHERE employeeid = $1;`
+        const updateQuery = `UPDATE ${tableName} SET ${setClause} WHERE employeeid = $1;`;
 
         const editData = await pool.query(updateQuery, values);
         const message = "Employee Data updated...";
@@ -54,13 +72,21 @@ const editEmployeeData = async (employeeID, tableName, setClause, values) => {
 
 const deleteEmployeeData = async (tableName, employeeID) => {
 
-    const findQuery = `SELECT * FROM ${tableName} WHERE employeeid = $1`;
+    const findQuery = `
+    SELECT * FROM ${tableName}
+    WHERE
+    employeeid = $1`;
 
     const employeeIdData = [employeeID]
     const findEmployee = await pool.query(findQuery, employeeIdData);
 
     if (findEmployee.rowCount !== 0) {
-        const deleteQuery = `DELETE FROM ${tableName} WHERE employeeid = $1;`
+        const deleteQuery = `
+    DELETE
+    FROM ${tableName}
+    WHERE
+    employeeid = $1;
+    `
 
         const deleteData = await pool.query(deleteQuery, employeeIdData);
         const message = "Employee Data Deleted...";
