@@ -26,8 +26,7 @@ const insertImportedFileData = (excelParsedData, tableName) => {
             console.log('Data inserted successfully');
         });
     });
-    // Release the client back to the pool
-    // done();
+
 };
 
 const insertNewEmployeeData = async (employeeID, tableName, columnNames, queryValues, valuePlaceholders) => {
