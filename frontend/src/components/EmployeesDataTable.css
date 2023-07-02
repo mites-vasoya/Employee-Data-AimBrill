@@ -1,0 +1,33 @@
+.table {
+    border: 2px solid black;
+    min-height: 450px;
+    height: fit-content;
+    margin: 20px auto 20px auto;
+    overflow: hidden;
+}
+
+.denseBtn {
+    /*border: 1px solid olive;*/
+    margin: 0px auto 10px 0px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.tableBtns {
+    width: 100%;
+    height: 60px;
+    margin: auto auto 30px auto;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+}
+
+.cancelDeleteBtn {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0 0 auto auto;
+}

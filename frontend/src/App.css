@@ -1,0 +1,52 @@
+.app {
+    border: 2px solid #f700ff;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+.app > .header {
+    border-bottom: 2px solid #acacac;
+    border-radius: 0 0 20px 20px;
+    width: 100%;
+    min-height: 80px;
+    height: fit-content;
+    margin: 0px auto 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+
+.header > p {
+    /*border: 1px solid yellow;*/
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 50px;
+    text-align: center;
+}
+
+.app > .tableDiv {
+    border: 1px solid hotpink;
+    width: calc(100% - 20px);
+    height: calc(100% - 100px);
+    margin: 10px 10px 0 10px;
+    display: flex;
+    flex-direction: column
+}
+
+.tableDiv > .headerDiv {
+    height: fit-content;
+    width: fit-content;
+    margin: 10px 10px 10px auto;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
