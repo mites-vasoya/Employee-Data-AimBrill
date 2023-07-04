@@ -1,0 +1,22 @@
+.fileUpload {
+    border: 2px solid #b9b9b9;
+    border-radius: 20px;
+    border-style: dashed;
+    width: 500px;
+    height: 500px;
+    display: flex;
+}
+
+#file-upload-form {
+    height: fit-content;
+    width:40%;
+    margin: auto;
+}
+
+.fileUpload > input[type = "file"] {
+    /*border: 2px solid #02f882;*/
+    width: 40%;
+    height: fit-content;
+    margin: auto;
+    box-sizing: border-box;
+}

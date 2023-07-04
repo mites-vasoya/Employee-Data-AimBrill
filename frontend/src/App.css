@@ -1,12 +1,10 @@
 .app {
-    border: 2px solid #f700ff;
+    /*border: 2px solid #f700ff;*/
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
-
 }
 
 .app > .header {
@@ -33,12 +31,14 @@
 }
 
 .app > .tableDiv {
-    border: 1px solid hotpink;
+    border: 1px solid #04f3fb;
     width: calc(100% - 20px);
-    height: calc(100% - 100px);
+    height: 80%;
     margin: 10px 10px 0 10px;
+    padding: 0;
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 .tableDiv > .headerDiv {
@@ -50,3 +50,4 @@
     flex-direction: row;
     box-sizing: border-box;
 }
+

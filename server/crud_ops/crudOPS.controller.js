@@ -23,7 +23,7 @@ const insertImportedFileData = (excelParsedData, tableName) => {
                 console.error('Error inserting data:', err);
                 return;
             }
-            console.log('Data inserted successfully');
+            // console.log('Data inserted successfully');
         });
     });
 
@@ -70,7 +70,6 @@ const editEmployeeData = async (employeeID, tableName, setClause, values) => {
 }
 
 const deleteEmployeeData = async (tableName, employeeID) => {
-
     const findQuery = `
     SELECT * FROM ${tableName}
     WHERE
@@ -85,7 +84,7 @@ const deleteEmployeeData = async (tableName, employeeID) => {
     FROM ${tableName}
     WHERE
     employeeid = $1;
-    `
+    `;
 
         const deleteData = await pool.query(deleteQuery, employeeIdData);
         const message = "Employee Data Deleted...";
@@ -94,9 +93,12 @@ const deleteEmployeeData = async (tableName, employeeID) => {
         const message = "Employee with given EmployeeID not found...";
         return {message};
     }
-
-    console.log("EMPLOYEE ID : ", findEmployee);
 }
 
 
-module.exports = {insertImportedFileData, editEmployeeData, deleteEmployeeData, insertNewEmployeeData};
+module.exports = {
+    insertImportedFileData,
+    editEmployeeData,
+    deleteEmployeeData,
+    insertNewEmployeeData,
+};
