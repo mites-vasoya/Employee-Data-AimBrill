@@ -1,0 +1,52 @@
+#chat-dialog-title > p {
+    width: fit-content;
+    height: fit-content;
+    margin: 0 auto;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+}
+
+#chat-dialog-title > p::after {
+    content: "";
+    background-color: black;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+}
+
+.chartContainer {
+    /*border: 2px solid yellow;*/
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.employeeSalaryChart, .employeentTypeChart {
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    border-radius: 20px;
+    box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.52);
+    width: 49%;
+    height: 100%;
+    padding: 5px 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.employeeSalaryChart > .title, .employeentTypeChart > .title {
+    border-bottom: 2px solid black;
+    width: fit-content;
+    padding: 0 10px;
+    margin: 20px auto auto auto;
+    font-family: Candara;
+    font-size: 40px;
+}
+

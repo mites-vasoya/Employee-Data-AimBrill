@@ -17,6 +17,7 @@ import './App.css';
 import DeleteConfirmationDialog from "./components/DeleteConfirmationDialog";
 import AddNewEmployeeData from "./components/AddNewEmployeeData";
 import IconButton from "@mui/material/IconButton";
+import ChartDialog from "./components/ChartDialog";
 
 function App() {
     const [openImportFile, setOpenImportFile] = useState(false);
@@ -25,16 +26,16 @@ function App() {
         EmployeeName: "", EmployeeStatus: "", JoiningDate: "", BirthDate: "", Skills: "", SalaryDetails: "", Address: ""
     });
     const [openChartDialog, setOpenChartDialog] = useState(false);
-    
-    const {employeeData, isImporting, isImported} = useSelector((state) => state.employeeOps);
 
-    // useEffect(() => {
-    //     console.log("TABLE DATA : ", employeeData);
-    // }, [employeeData])
+    const {employeeData, isImporting, isImported} = useSelector((state) => state.employeeOps);
 
     const handleAddNewBtn = () => {
         setOpenAddNewData(true);
         console.log("ADDING NEW DATA__");
+    }
+
+    const handleChartBtn = () => {
+        setOpenChartDialog(true);
     }
 
     return (<>
@@ -55,7 +56,7 @@ function App() {
                                 Employee's Records
                             </p>
                             <div className="chartBtn">
-                                <IconButton color="primary" size="large">
+                                <IconButton color="primary" size="large" onClick={handleChartBtn}>
                                     <InsertChartIcon/>
                                 </IconButton>
                             </div>
@@ -79,6 +80,11 @@ function App() {
                 setNewEmployeeData={setNewEmployeeData}
                 openAddNewData={openAddNewData}
                 setOpenAddNewData={setOpenAddNewData}/>
+        </>) : (<></>)}
+
+        {openChartDialog ? (<>
+            <ChartDialog employeeData={employeeData} openChartDialog={openChartDialog}
+                         setOpenChartDialog={setOpenChartDialog}/>
         </>) : (<></>)}
 
     </>);
