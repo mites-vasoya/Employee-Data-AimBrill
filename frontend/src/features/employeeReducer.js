@@ -11,20 +11,22 @@ const uploadIFile = async (formData) => {
     return response.data;
 }
 
+const addNewData = async (newData) => {
+    console.log("NEW DATA : ", newData);
+    const response = await axios.post(API + `/employee/add`, newData);
+    console.log("UPDATE RESPONSE :", response.data)
+    return response.data;
+}
+
 const updateData = async (newData) => {
     console.log("NEW DATA : ", newData);
-    const response = await axios.put(
-        API + `/employee/edit/${newData.EmployeeID}`,
-        newData
-    );
+    const response = await axios.put(API + `/employee/edit/${newData.EmployeeID}`, newData);
     console.log("UPDATE RESPONSE :", response.data)
     return response.data;
 }
 
 const deleteSingleData = async (employeeId) => {
     const response = await axios.delete(API + `/employee/delete/${employeeId}`);
-
-    console.log("DELETE SINGLE : ", response.data)
     return response.data;
 }
 
@@ -36,7 +38,7 @@ const deleteMultipleData = async (employeeIds) => {
 }
 
 const employeeService = {
-    uploadIFile, updateData, deleteSingleData, deleteMultipleData
+    uploadIFile, addNewData, updateData, deleteSingleData, deleteMultipleData
 }
 
 export default employeeService;

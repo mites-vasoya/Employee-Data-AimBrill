@@ -2,7 +2,14 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import employeeService from "./employeeReducer";
 
 const initialState = {
-    employeeData: [], isImporting: false, isImported: false, isDeleting: false, isDelete: false, isError: false,
+    employeeData: [],
+    isImporting: false,
+    isImported: false,
+    isDeleting: false,
+    isDelete: false,
+    isAdded: false,
+    isAdding: false,
+    isError: false,
 };
 
 export const uploadFile = createAsyncThunk("file/upload", async (formData, thunkAPI) => {
@@ -17,6 +24,15 @@ export const uploadFile = createAsyncThunk("file/upload", async (formData, thunk
 export const updateData = createAsyncThunk("data/update", async (newData, thunkAPI) => {
     try {
         return await employeeService.updateData(newData);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
+export const addNewData = createAsyncThunk("data/add/new", async (newData, thunkAPI) => {
+    try {
+        return await employeeService.addNewData(newData);
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
         return thunkAPI.rejectWithValue(message);
@@ -58,6 +74,22 @@ const fileImportSlice = createSlice({
                 state.employeeData = action.payload;
             })
             .addCase(uploadFile.rejected, (state, action) => {
+                state.isImporting = false;
+                state.isImported = false;
+                state.isError = true;
+            })
+            .addCase(addNewData.pending, (state) => {
+                state.isImporting = true;
+                state.isImported = false;
+                state.isError = false;
+            })
+            .addCase(addNewData.fulfilled, (state, action) => {
+                state.isAdding = false;
+                state.isAdded = true;
+                state.isError = false;
+                state.employeeData.push(action.payload.data);
+            })
+            .addCase(addNewData.rejected, (state, action) => {
                 state.isImporting = false;
                 state.isImported = false;
                 state.isError = true;

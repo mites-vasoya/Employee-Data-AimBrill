@@ -14,10 +14,6 @@ function FileImportDialog({openImportFile, setOpenImportFile}) {
     const dispatch = useDispatch();
     const [importedFile, setImportedFile] = useState();
 
-    useEffect(() => {
-        console.log("IMPORTED FILE : ", importedFile);
-    }, [importedFile])
-
     const handleDropEvent = (e) => {
         console.log("DROP EVENT : ", e.target.files)
     }
@@ -29,14 +25,13 @@ function FileImportDialog({openImportFile, setOpenImportFile}) {
 
     const handleImportBtn = () => {
         if (importedFile === undefined) {
-            alert("Select File to Upload")
+            alert("Select File to Upload");
         } else {
             const form = document.getElementById("file-upload-form");
             const formData = new FormData(form);
-            console.log("IMP FILE : ", importedFile)
             formData.append('file', importedFile);
             formData.append("name", "Mitesh");
-            setOpenImportFile(!openImportFile)
+            setOpenImportFile(!openImportFile);
             dispatch(uploadFile(formData));
         }
     }

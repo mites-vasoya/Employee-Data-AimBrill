@@ -39,10 +39,6 @@ export default function EmployeesDataTable({employeeData}) {
     const [openEditConfirmDialog, setOpenEditConfirmDialog] = useState(false);
 
     useEffect(() => {
-        console.log("__EDIT EMPLOYEE DATA__", editEmployeeData);
-    }, [editEmployeeData])
-
-    useEffect(() => {
         for (let i = 0; i < employeeData.length; i++) {
             if (employeeData[i].EmployeeID === editEmployeeId) {
                 setEditEmployeeData(employeeData[i]);
@@ -102,94 +98,95 @@ export default function EmployeesDataTable({employeeData}) {
         setEditEmployeeId(employeeID);
     }
 
-    return (<div className="tableContainer">
-        {employeeData.length > 0 ? (<>
-            <Paper className="table">
-                <TableContainer sx={{maxHeight: 440}}>
-                    <Table stickyHeader aria-label="sticky table" size="normal">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell padding="checkbox"></TableCell>
-                                {columns.map((column) => (<TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{minWidth: column.minWidth}}
-                                >
-                                    {column.label}
-                                </TableCell>))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {employeeData
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        <TableCell padding="checkbox">
-                                            <Checkbox
-                                                color="primary"
-                                                onChange={() => handleCheckBox(row)}
-                                            />
-                                        </TableCell>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (<TableCell key={row.EmployeeID} align={column.align}>
-                                                {column.id === "singleDeleteBtn" ? (<><IconButton
-                                                    aria-label="delete"
-                                                    onClick={() => handleDeleteConfirmation(row.EmployeeID)}>
-                                                    <DeleteIcon/>
-                                                </IconButton></>) : column.id === "editDataBtn" ? (<>
-                                                    <IconButton aria-label="edit"
-                                                                onClick={() => handleEditConfirmation(row.EmployeeID)}>
-                                                        <EditIcon/>
-                                                    </IconButton>
-                                                </>) : (<>{value}</>)}
-                                            </TableCell>);
-                                        })}
-                                    </TableRow>);
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[50, 100]}
-                    component="div"
-                    count={employeeData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </>) : (<>
-            <div className="noDataTitle">
-                No Data Found, Upload Excel
-            </div>
-        </>)}
+    return (
+        <div className="tableContainer">
+            {employeeData.length > 0 ? (<>
+                <Paper className="table">
+                    <TableContainer sx={{maxHeight: 440}}>
+                        <Table stickyHeader aria-label="sticky table" size="normal">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell padding="checkbox"></TableCell>
+                                    {columns.map((column) => (<TableCell
+                                        key={column.id}
+                                        align={column.align}
+                                        style={{minWidth: column.minWidth}}
+                                    >
+                                        {column.label}
+                                    </TableCell>))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {employeeData
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => {
+                                        return (<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    color="primary"
+                                                    onChange={() => handleCheckBox(row)}
+                                                />
+                                            </TableCell>
+                                            {columns.map((column) => {
+                                                const value = row[column.id];
+                                                return (<TableCell key={row.EmployeeID} align={column.align}>
+                                                    {column.id === "singleDeleteBtn" ? (<><IconButton
+                                                        aria-label="delete"
+                                                        onClick={() => handleDeleteConfirmation(row.EmployeeID)}>
+                                                        <DeleteIcon/>
+                                                    </IconButton></>) : column.id === "editDataBtn" ? (<>
+                                                        <IconButton aria-label="edit"
+                                                                    onClick={() => handleEditConfirmation(row.EmployeeID)}>
+                                                            <EditIcon/>
+                                                        </IconButton>
+                                                    </>) : (<>{value}</>)}
+                                                </TableCell>);
+                                            })}
+                                        </TableRow>);
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[50, 100]}
+                        component="div"
+                        count={employeeData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </>) : (<>
+                <div className="noDataTitle">
+                    No Data Found, Upload Excel
+                </div>
+            </>)}
 
-        {selectedDataRow.length > 0 ? (<>
-            <div className="extraBtns">
-                <Button variant="contained" className="deleteBtn" onClick={handleMultipleDeleteBtn}
-                        startIcon={<DeleteIcon/>}>Delete Data</Button>
-                <Button variant="outlined" className="cancelBtn">Cancel</Button>
-            </div>
-        </>) : (<></>)}
+            {selectedDataRow.length > 0 ? (<>
+                <div className="extraBtns">
+                    <Button variant="contained" className="deleteBtn" onClick={handleMultipleDeleteBtn}
+                            startIcon={<DeleteIcon/>}>Delete Data</Button>
+                    <Button variant="outlined" className="cancelBtn">Cancel</Button>
+                </div>
+            </>) : (<></>)}
 
-        {openDeleteConfirmDialog ? (<>
-            <DeleteConfirmationDialog
-                deleteEmployeeId={deleteEmployeeId}
-                openDeleteConfirmDialog={openDeleteConfirmDialog}
-                setOpenDeleteConfirmDialog={setOpenDeleteConfirmDialog}
-            />
-        </>) : (<></>)}
-        {
-            openEditConfirmDialog ? (<>
-                <EditEmployeeDataDialog
-                    editEmployeeData={editEmployeeData}
-                    setEditEmployeeData={setEditEmployeeData}
-                    openEditConfirmDialog={openEditConfirmDialog}
-                    setOpenEditConfirmDialog={setOpenEditConfirmDialog}
+            {openDeleteConfirmDialog ? (<>
+                <DeleteConfirmationDialog
+                    deleteEmployeeId={deleteEmployeeId}
+                    openDeleteConfirmDialog={openDeleteConfirmDialog}
+                    setOpenDeleteConfirmDialog={setOpenDeleteConfirmDialog}
                 />
-            </>) : (<></>)
-        }
-    </div>);
+            </>) : (<></>)}
+            {
+                openEditConfirmDialog ? (<>
+                    <EditEmployeeDataDialog
+                        editEmployeeData={editEmployeeData}
+                        setEditEmployeeData={setEditEmployeeData}
+                        openEditConfirmDialog={openEditConfirmDialog}
+                        setOpenEditConfirmDialog={setOpenEditConfirmDialog}
+                    />
+                </>) : (<></>)
+            }
+        </div>);
 }

@@ -51,3 +51,36 @@
     box-sizing: border-box;
 }
 
+.tableItems {
+    /*border: 1px solid gold;*/
+    margin: auto 0;
+}
+
+.tableItems > .tableHeader {
+    border: 2px solid #c0c0c0;
+    border-radius: 10px 10px 0 0;
+    width: 90%;
+    height: 60px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+
+.tableHeader > p {
+    /*border: 1px solid black;*/
+    width: fit-content;
+    height: fit-content;
+    margin: auto auto auto 20px;
+    font-family: Candara;
+    font-size: 30px;
+}
+
+.tableHeader > .chartBtn {
+    border: 1px solid rgba(167, 167, 167, 0.4);
+    border-radius: 10%;
+    background-color: rgba(0, 0, 0, 0.17);
+    width: fit-content;
+    height: fit-content;
+    margin: auto 20px auto auto;
+}

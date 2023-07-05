@@ -73,10 +73,6 @@ router.post("/import", upload.single('importedFile'), async (req, res) => {
         }
     });
 
-    //Fetch Data from the Database
-
-
-    console.log("IMPORTED FILE : ", importedFile);
     //Return response to the client
     res.status(200).json(excelParsedData);
 });
