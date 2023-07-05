@@ -44,11 +44,15 @@ function App() {
                 <p>AimBrill Employee Data</p>
             </div>
             <div className="tableDiv">
-                <div className="headerDiv">
-                    <Button variant="contained" sx={{backgroundColor: "black"}} startIcon={<AddIcon/>}
-                            className="newDataBtn" onClick={handleAddNewBtn}> Add New
-                        Data</Button>
-                </div>
+                {employeeData.length > 0 ? (<>
+                    <div className="headerDiv">
+                        <Button variant="contained" startIcon={<AddIcon/>}
+                                className="newDataBtn" onClick={handleAddNewBtn}>
+                            Add New Data
+                        </Button>
+                    </div>
+                </>) : (<></>)}
+
                 <div className="tableItems">
                     {employeeData.length > 0 ? (<>
                         <div className="tableHeader">

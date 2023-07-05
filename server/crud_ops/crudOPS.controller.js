@@ -62,6 +62,8 @@ const editEmployeeData = async (employeeID, tableName, setClause, values) => {
         const editData = await pool.query(updateQuery, values);
         const message = "Employee Data updated...";
         const findEmployeeNewData = await pool.query(findQuery, employeeIdData);
+
+        // console.log("NEW EMP DATA : ", findEmployeeNewData);
         return {message, newData: findEmployeeNewData.rows[0]}
     } else {
         const message = "Employee with given EmployeeID not found...";

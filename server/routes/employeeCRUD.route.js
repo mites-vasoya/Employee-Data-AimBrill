@@ -26,7 +26,9 @@ router.post("/add", async (req, res) => {
     //Insert new user data
     const insertResponse = await insertNewEmployeeData(employeeID, tableName, columnNames, queryValues, valuePlaceholders);
 
-    res.status(200).json({data: insertResponse.addedEmployee, message: insertResponse.message});
+    fields.EmployeeID = insertResponse.addedEmployee.employeeid;
+
+    res.status(200).json({data: fields, message: insertResponse.message});
 })
 
 //Edit Employee Data
@@ -45,7 +47,7 @@ router.put("/edit/:id", async (req, res) => {
 
     const updateResponse = await editEmployeeData(employeeID, tableName, setClause, values);
 
-    res.status(200).json({newData: updateResponse.newData, message: updateResponse.message})
+    res.status(200).json({newData: fields, message: updateResponse.message})
 });
 
 //Delete Employee Data

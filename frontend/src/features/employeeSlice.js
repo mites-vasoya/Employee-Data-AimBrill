@@ -3,10 +3,14 @@ import employeeService from "./employeeReducer";
 
 const initialState = {
     employeeData: [],
+    isUploading: false,
+    isUploaded: false,
     isImporting: false,
     isImported: false,
+    isUpdating: false,
+    isUpdated: false,
     isDeleting: false,
-    isDelete: false,
+    isDeleted: false,
     isAdded: false,
     isAdding: false,
     isError: false,
@@ -57,6 +61,15 @@ export const deleteMultipleData = createAsyncThunk("data/delete/multiple", async
     }
 });
 
+export const sampleFileDownload = createAsyncThunk("file/download", async (employeeIds, thunkAPI) => {
+    try {
+        return await employeeService.sampleFileDownload();
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 const fileImportSlice = createSlice({
     name: "file", initialState, reducers: {
         reset: (state) => initialState,
@@ -79,8 +92,8 @@ const fileImportSlice = createSlice({
                 state.isError = true;
             })
             .addCase(addNewData.pending, (state) => {
-                state.isImporting = true;
-                state.isImported = false;
+                state.isAdding = true;
+                state.isAdded = false;
                 state.isError = false;
             })
             .addCase(addNewData.fulfilled, (state, action) => {
@@ -90,31 +103,31 @@ const fileImportSlice = createSlice({
                 state.employeeData.push(action.payload.data);
             })
             .addCase(addNewData.rejected, (state, action) => {
-                state.isImporting = false;
-                state.isImported = false;
+                state.isAdding = false;
+                state.isAdded = false;
                 state.isError = true;
             })
             .addCase(updateData.pending, (state) => {
-                state.isImporting = true;
-                state.isImported = false;
+                state.isUpdating = true;
+                state.isUpdated = false;
                 state.isError = false;
             })
             .addCase(updateData.fulfilled, (state, action) => {
-                state.isImporting = false;
-                state.isImported = true;
+                state.isUpdating = false;
+                state.isUpdated = true;
                 state.isError = false;
-                for (let i = 0; i < state.employeeData.length; i++) {
-                    if (state.employeeData[i].EmployeeID === Number(action.payload.newData.employeeid)) {
-                        state.employeeData[i] = action.payload.newData;
-                        console.log("DATA MATCHED;;;");
-                        break;
+                const updatedEmployeeData = state.employeeData.map(employee => {
+                    if (employee.EmployeeID === Number(action.payload.newData.EmployeeID)) {
+                        return action.payload.newData; // Replace the matched object with the updated data
                     }
-                }
-                console.log("NEW DATA :::: ", action.payload.newData);
+                    return employee; // Return the original object for other employees
+                });
+                state.employeeData = updatedEmployeeData;
+                // console.log("NEW DATA :::: ", updatedEmployeeData.length);
             })
             .addCase(updateData.rejected, (state, action) => {
-                state.isImporting = false;
-                state.isImported = false;
+                state.isUpdating = false;
+                state.isUpdated = false;
                 state.isError = true;
             })
             .addCase(deleteSingleData.pending, (state) => {

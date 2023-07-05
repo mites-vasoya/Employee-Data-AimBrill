@@ -37,6 +37,15 @@ export default function AddNewEmployeeData({newEmployeeData, setNewEmployeeData,
         if (newEmployeeData.EmployeeName.trim() !== "" || newEmployeeData.SalaryDetails.trim() !== "" || newEmployeeData.BirthDate.trim() !== "" || newEmployeeData.Skills.trim() !== "" || newEmployeeData.Address.trim() !== "" || newEmployeeData.JoiningDate.trim() !== "" || newEmployeeData.EmployeeStatus.trim() !== "") {
             setOpenAddNewData(false);
             dispatch(addNewData(newEmployeeData));
+            setNewEmployeeData({
+                EmployeeName: "",
+                EmployeeStatus: "",
+                JoiningDate: "",
+                BirthDate: "",
+                Skills: "",
+                SalaryDetails: "",
+                Address: ""
+            })
         } else {
             alert()
         }

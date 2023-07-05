@@ -37,8 +37,14 @@ const deleteMultipleData = async (employeeIds) => {
     return response.data;
 }
 
+const sampleFileDownload = async () => {
+    const response = await axios.get(API + "/file/download");
+    return response.data;
+}
+
 const employeeService = {
-    uploadIFile, addNewData, updateData, deleteSingleData, deleteMultipleData
+    uploadIFile, addNewData, updateData, deleteSingleData, deleteMultipleData,
+    sampleFileDownload
 }
 
 export default employeeService;

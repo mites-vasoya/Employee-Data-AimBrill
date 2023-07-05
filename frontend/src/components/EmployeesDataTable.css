@@ -65,3 +65,20 @@
     margin: 0 10px auto auto;
 }
 
+.pagination-dense-btn {
+    width: 100%;
+    height: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tablePagination {
+    width: fit-content;
+    height: fit-content;
+}
+
+.densitySwitch {
+    margin-left: 30px;
+}

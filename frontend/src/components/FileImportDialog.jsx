@@ -36,8 +36,12 @@ function FileImportDialog({openImportFile, setOpenImportFile}) {
         }
     }
 
+    const handleExcelDownloadBtn = () => {
+        dispatch();
+    }
+
     return (<div>
-        <Dialog open={openImportFile} sx={{border: '3px solid red;'}}>
+        <Dialog open={openImportFile}>
             <DialogTitle>Import File</DialogTitle>
             <DialogContent>
                 <div className="fileUpload">
@@ -47,8 +51,13 @@ function FileImportDialog({openImportFile, setOpenImportFile}) {
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpenImportFile(!openImportFile)}>Cancel</Button>
-                <Button onClick={handleImportBtn}>Import</Button>
+                <div className="btns">
+                    <div>
+                        <Button onClick={() => setOpenImportFile(!openImportFile)}>Cancel</Button>
+                        <Button onClick={handleImportBtn}>Import</Button>
+                    </div>
+                </div>
+
             </DialogActions>
         </Dialog>
     </div>);

@@ -41,7 +41,7 @@ const deleteExistingTable = async (tableName) => {
 //File Import Route
 router.post("/import", upload.single('importedFile'), async (req, res) => {
     const importedFile = req.file;
-    console.log("IMPORTED FILE DATA : ", importedFile)
+    // console.log("IMPORTED FILE DATA : ", importedFile)
 
     //Read Data from the excel file
     const excelParsedData = readExcelController(importedFile.path);
