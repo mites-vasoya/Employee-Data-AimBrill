@@ -1,0 +1,23 @@
+/*.editDataDialog {*/
+/*    border : 3px solid green;*/
+/*}*/
+
+.editDataForm {
+    /*border: 1px solid red;*/
+    width: 500px;
+    height: fit-content;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.editDataForm > div {
+    /*border: 1px solid #02dcfa;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#employeeIdField, #employeeNameField {
+
+}

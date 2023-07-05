@@ -95,10 +95,22 @@ const deleteEmployeeData = async (tableName, employeeID) => {
     }
 }
 
+const deleteMultipleEmployeeData = async (tableName, idsArray) => {
+    try {
+        const deleteMultipleQuery = `DELETE FROM ${tableName} WHERE employeeid = ANY($1)`;
+        const values = [idsArray];
+
+        const findValues = `SELECT * FROM ${tableName} WHERE employeeid  = deleteMultipleQuery`
+
+        const deleteResponse = await pool.query(deleteMultipleQuery, values);
+
+        return {message: "Data deleted successfully"};
+    } catch (error) {
+        console.log("ERROR WHILE DELETING MULTIPLE DATA :", error);
+    }
+}
+
 
 module.exports = {
-    insertImportedFileData,
-    editEmployeeData,
-    deleteEmployeeData,
-    insertNewEmployeeData,
+    insertImportedFileData, editEmployeeData, deleteEmployeeData, deleteMultipleEmployeeData, insertNewEmployeeData,
 };

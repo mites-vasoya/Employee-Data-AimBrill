@@ -13,16 +13,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Footer from "./components/Footer";
 import FileImportDialog from "./components/FileImportDialog";
 import './App.css';
+import DeleteConfirmationDialog from "./components/DeleteConfirmationDialog";
 
 function App() {
     const [openImportFile, setOpenImportFile] = useState(false);
+    const {employeeData, isImporting, isImported} = useSelector((state) => state.employeeOps);
 
-
-    const {employeeData, isImporting, isImported} = useSelector((state) => state.uploadFile);
-
-    useEffect(() => {
-        console.log("TABLE DATA : ", employeeData);
-    }, [employeeData])
+    // useEffect(() => {
+    //     console.log("TABLE DATA : ", employeeData);
+    // }, [employeeData])
 
 
     return (<>
@@ -38,11 +37,16 @@ function App() {
                 </div>
                 <EmployeesDataTable employeeData={employeeData}/>
             </div>
-            <Footer openImportFile={openImportFile} setOpenImportFile={setOpenImportFile}/>
+            {
+                employeeData.length > 0 ? (<></>) : (<> <Footer openImportFile={openImportFile}
+                                                                setOpenImportFile={setOpenImportFile}/></>)
+            }
+
         </div>
         {openImportFile ? (<>
             <FileImportDialog openImportFile={openImportFile} setOpenImportFile={setOpenImportFile}/>
         </>) : (<></>)}
+
     </>);
 }
 

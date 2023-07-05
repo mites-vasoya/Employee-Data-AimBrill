@@ -10,8 +10,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState} from "react";
 import {Button, Checkbox} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import "./EmployeesDataTable.css"
+import {deleteMultipleData} from "../features/employeeSlice";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
+import EditEmployeeDataDialog from "./EditEmployeeDataDialog";
 
 let columns = [];
 
@@ -26,11 +31,25 @@ export default function EmployeesDataTable({employeeData}) {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(50);
-    const [selectedDataRow, setSelectedDataRow] = useState([])
+    const [selectedDataRow, setSelectedDataRow] = useState([]);
+    const [deleteEmployeeId, setDeleteEmployeeId] = useState();
+    const [editEmployeeId, setEditEmployeeId] = useState();
+    const [editEmployeeData, setEditEmployeeData] = useState({});
+    const [openDeleteConfirmDialog, setOpenDeleteConfirmDialog] = useState(false);
+    const [openEditConfirmDialog, setOpenEditConfirmDialog] = useState(false);
 
     useEffect(() => {
-        console.log("SELECTED ROW : ", selectedDataRow)
-    }, [selectedDataRow])
+        console.log("__EDIT EMPLOYEE DATA__", editEmployeeData);
+    }, [editEmployeeData])
+
+    useEffect(() => {
+        for (let i = 0; i < employeeData.length; i++) {
+            if (employeeData[i].EmployeeID === editEmployeeId) {
+                setEditEmployeeData(employeeData[i]);
+                break;
+            }
+        }
+    }, [editEmployeeId]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -47,9 +66,9 @@ export default function EmployeesDataTable({employeeData}) {
         const cols = Object.keys(employeeData[0])
         cols.map((col, i) => {
             const colObj = {id: col, label: col};
-            // console.log("COLUMNS : ", colObj);
             tableColumnsTemp.push(colObj);
-        })
+        });
+        tableColumnsTemp.push({id: "singleDeleteBtn", label: "Delete"}, {id: "editDataBtn", label: "Edit"})
         columns = tableColumnsTemp;
     } else {
     }
@@ -70,75 +89,107 @@ export default function EmployeesDataTable({employeeData}) {
     }
 
     const handleMultipleDeleteBtn = () => {
-
+        dispatch(deleteMultipleData(selectedDataRow));
     }
 
-    return (
-        <div className="tableContainer">
-            {employeeData.length > 0 ? (<>
-                <Paper className="table">
-                    <TableContainer sx={{maxHeight: 440}}>
-                        <Table stickyHeader aria-label="sticky table" size="normal">
-                            <TableHead>
+    const handleDeleteConfirmation = (employeeID) => {
+        setOpenDeleteConfirmDialog(!openDeleteConfirmDialog);
+        setDeleteEmployeeId(employeeID);
+    }
 
-                                <TableRow>
-                                    <TableCell padding="checkbox"></TableCell>
-                                    {columns.map((column) => (<TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{minWidth: column.minWidth}}
-                                    >
-                                        {column.label}
-                                    </TableCell>))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {employeeData
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => {
-                                        return (<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    onChange={() => handleCheckBox(row)}
-                                                />
-                                            </TableCell>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (<TableCell key={row.EmployeeID} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                                </TableCell>);
-                                            })}
-                                        </TableRow>);
-                                    })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[50, 100]}
-                        component="div"
-                        count={employeeData.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
-            </>) : (<>
-                <div className="noDataTitle">
-                    No Data Found, Upload Excel
-                </div>
-            </>)}
+    const handleEditConfirmation = (employeeID) => {
+        setOpenEditConfirmDialog(!openEditConfirmDialog);
+        setEditEmployeeId(employeeID);
+    }
 
-            {
-                selectedDataRow.length > 0 ? (<>
-                    <div className="extraBtns">
-                        <Button variant="contained" className="deleteBtn" onClick={handleMultipleDeleteBtn}
-                                startIcon={<DeleteIcon/>}>Delete Data</Button>
-                        <Button variant="outlined" className="cancelBtn">Cancel</Button>
-                    </div>
-                </>) : (<></>)
-            }
-        </div>
-    );
+    return (<div className="tableContainer">
+        {employeeData.length > 0 ? (<>
+            <Paper className="table">
+                <TableContainer sx={{maxHeight: 440}}>
+                    <Table stickyHeader aria-label="sticky table" size="normal">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell padding="checkbox"></TableCell>
+                                {columns.map((column) => (<TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{minWidth: column.minWidth}}
+                                >
+                                    {column.label}
+                                </TableCell>))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {employeeData
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row) => {
+                                    return (<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        <TableCell padding="checkbox">
+                                            <Checkbox
+                                                color="primary"
+                                                onChange={() => handleCheckBox(row)}
+                                            />
+                                        </TableCell>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (<TableCell key={row.EmployeeID} align={column.align}>
+                                                {column.id === "singleDeleteBtn" ? (<><IconButton
+                                                    aria-label="delete"
+                                                    onClick={() => handleDeleteConfirmation(row.EmployeeID)}>
+                                                    <DeleteIcon/>
+                                                </IconButton></>) : column.id === "editDataBtn" ? (<>
+                                                    <IconButton aria-label="edit"
+                                                                onClick={() => handleEditConfirmation(row.EmployeeID)}>
+                                                        <EditIcon/>
+                                                    </IconButton>
+                                                </>) : (<>{value}</>)}
+                                            </TableCell>);
+                                        })}
+                                    </TableRow>);
+                                })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[50, 100]}
+                    component="div"
+                    count={employeeData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+        </>) : (<>
+            <div className="noDataTitle">
+                No Data Found, Upload Excel
+            </div>
+        </>)}
+
+        {selectedDataRow.length > 0 ? (<>
+            <div className="extraBtns">
+                <Button variant="contained" className="deleteBtn" onClick={handleMultipleDeleteBtn}
+                        startIcon={<DeleteIcon/>}>Delete Data</Button>
+                <Button variant="outlined" className="cancelBtn">Cancel</Button>
+            </div>
+        </>) : (<></>)}
+
+        {openDeleteConfirmDialog ? (<>
+            <DeleteConfirmationDialog
+                deleteEmployeeId={deleteEmployeeId}
+                openDeleteConfirmDialog={openDeleteConfirmDialog}
+                setOpenDeleteConfirmDialog={setOpenDeleteConfirmDialog}
+            />
+        </>) : (<></>)}
+        {
+            openEditConfirmDialog ? (<>
+                <EditEmployeeDataDialog
+                    editEmployeeData={editEmployeeData}
+                    setEditEmployeeData={setEditEmployeeData}
+                    openEditConfirmDialog={openEditConfirmDialog}
+                    setOpenEditConfirmDialog={setOpenEditConfirmDialog}
+                />
+            </>) : (<></>)
+        }
+    </div>);
 }

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    editEmployeeData, deleteEmployeeData, insertNewEmployeeData,
+    editEmployeeData, deleteEmployeeData, insertNewEmployeeData, deleteMultipleEmployeeData
 } = require("../crud_ops/crudOPS.controller")
 
 const {generateRandomNumber} = require("../functions/functions");
@@ -54,7 +54,19 @@ router.delete("/delete/:id", async (req, res) => {
     const tableName = "employee_data"
 
     const deleteResponse = await deleteEmployeeData(tableName, employeeID);
-    res.status(200).json({message: deleteResponse.message})
+    res.status(200).json({employeeId: employeeID, message: deleteResponse.message})
+});
+
+router.post("/delete/multiple", async (req, res) => {
+    try {
+        const tableName = "employee_data"
+        const deleteResponse = await deleteMultipleEmployeeData(tableName, req.body);
+
+        res.status(200).json({return: req.body});
+    } catch (error) {
+        console.error('Error deleting multiple rows:', error);
+        res.status(201).json({mmesage: "Error While deleting the data..."});
+    }
 })
 
 module.exports = router;

@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import {Button} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 
-import {uploadFile} from "../features/uploadFileSlice";
+import {uploadFile} from "../features/employeeSlice";
 
 import "./FileImportDialog.css"
 import {useDispatch} from "react-redux";
